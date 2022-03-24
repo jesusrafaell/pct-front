@@ -1,8 +1,7 @@
-import React from 'react';
-import './App.css';
+import { AppRouter } from './routers';
 
 function App() {
-	return <div className='App'></div>;
+	return <AppRouter />;
 }
 
 export default App;
