@@ -35,8 +35,6 @@
 		"@types/react": "17.0.38"
 	},
 	"scripts": {
-		"start:w": "set PORT=2000 && react-scripts start",
-		"start:u": "PORT=2000 react-scripts start",
 		"start": "react-scripts start",
 		"dev:u": "sudo kill -9 $(sudo lsof -t -i:2000)",
 		"build": "react-scripts build",

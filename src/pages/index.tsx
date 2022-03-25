@@ -1,28 +1,17 @@
 import { Box, LinearProgress } from '@mui/material';
 //import Router from 'next/router';
-import { useContext, useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import Layout from '../components/layout/Layout';
-//import AuthContext from '@/stores/authContext';
 //import Image from 'next/image';
 //import TranredLogo from '@/images/tranred-logo.png';
+
 import { useStyles } from '../styles/home';
 
 const Home = () => {
-	console.log('home');
-	const [loaded, setLoaded] = useState<boolean>(false);
-	//const { user } = useContext(AuthContext);
-	const classes = useStyles();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [loaded, setLoaded] = useState<boolean>(true);
 
-	/*
-	useLayoutEffect(() => {
-		//const { pathname } = Router;
-		if (pathname == '/' && !user) {
-			Router.push('/auth/login');
-		} else {
-			setLoaded(true);
-		}
-	}, [user]);
-		*/
+	const classes = useStyles();
 
 	if (!loaded) {
 		return (

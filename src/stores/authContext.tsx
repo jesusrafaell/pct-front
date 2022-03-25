@@ -5,6 +5,8 @@ import { ObjString, UserLoginInt } from '../interfaces/auth/interfaces';
 //import Router from 'next/router';
 import { removeCookies, getCookies, setCookies } from 'cookies-next';
 import { validSession } from '../validation/session';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { urlLogin } from '../routers/url';
 
 export interface User {
 	email: string;

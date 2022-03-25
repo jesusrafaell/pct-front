@@ -1,6 +1,6 @@
 import useAxios from '../config';
-import { Terminal } from '../interfaces/reportes/reporte';
-import { User } from '../stores/authContext';
+//import { Terminal } from '../interfaces/reportes/reporte';
+//import { User } from '../stores/authContext';
 import { validSession } from '../validation/session';
 //import { sessionExpired } from '@/utilis/sweetalert-auth';
 
@@ -11,7 +11,7 @@ export const reporte = {
 
 async function getTerminals(na: string) {
 	try {
-		console.log('call:', na);
+		//console.log('call:', na);
 		const res = await useAxios.get(`/reportes/terminales/${na}`);
 		//console.log('repote', res.data);
 		return res.data.terminales;
@@ -28,10 +28,10 @@ async function getTerminals(na: string) {
 				message: data?.message || 'Error: Api',
 				code: data?.code || err?.response?.status || '400',
 			};
-			console.log(resError);
+			//console.log(resError);
 			return resError;
 		}
-		console.log(err);
+		//console.log(err);
 	}
 }
 
@@ -48,7 +48,7 @@ async function getTrans(data: DataQuery) {
 		//console.log('repote', res.data);
 		return res.data.transacciones;
 	} catch (err: any) {
-		console.log(err.response);
+		//console.log(err.response);
 		const data = err.response?.data;
 
 		//Valid Token invalido //mover de aqui a un validador de session expired
@@ -59,7 +59,7 @@ async function getTrans(data: DataQuery) {
 			message: data?.message || 'Error: Api',
 			code: data?.code || err?.response?.status || '400',
 		};
-		console.log(resError);
+		//console.log(resError);
 		return resError;
 	}
 }

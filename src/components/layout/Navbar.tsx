@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,24 +6,27 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-import { useContext, useLayoutEffect, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { baseUrl, urlLogin, urlRegister } from '../../routers/url';
+import { ListItem } from '@mui/material';
+import AuthContext from '../../stores/authContext';
 
-//import Link from 'next/link';
 //import AuthContext from '@/stores/authContext';
 //import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
 
 const pagesInit = [
 	{
 		name: 'Iniciar sesión',
-		path: '/auth/login',
+		path: urlLogin,
 	},
 	{
 		name: 'Registrarme',
-		path: '/auth/register',
+		path: urlRegister,
 	},
 ];
 
@@ -38,11 +40,25 @@ const PagesInitUser = [
 //const settings = ['Cerrar sesión'];
 
 export default function NavBar() {
-	//const { user, logout } = useContext(AuthContext);
+	const { user, logout } = useContext(AuthContext);
 
-	const [pages, setPages] = React.useState<any[]>(pagesInit);
+	const [pages, setPages] = useState<any[]>(pagesInit);
 
-	/*
+	const location = useLocation();
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const { pathname } = location;
+		if (!user && pathname !== urlLogin && pathname !== urlRegister) {
+			navigate(urlLogin);
+		}
+		if ((pathname === urlLogin || pathname === urlRegister) && user) {
+			navigate(baseUrl);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user]);
+
 	useLayoutEffect(() => {
 		if (user) {
 			setPages(PagesInitUser);
@@ -50,9 +66,12 @@ export default function NavBar() {
 			setPages(pagesInit);
 		}
 	}, [user]);
-  */
 
 	const name = 'Tranred';
+
+	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, url: string) => {
+		navigate(url);
+	};
 
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -76,18 +95,18 @@ export default function NavBar() {
 		<AppBar position='static'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					{/*
-            <Link href='/' passHref>
-              <Typography
-                variant='h6'
-                noWrap
-                component='div'
-                sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, cursor: 'pointer' }}>
-                {name}
-              </Typography>
-            </Link>
-          */}
-
+					<ListItem
+						onClick={() => {
+							navigate(baseUrl);
+						}}>
+						<Typography
+							variant='h6'
+							noWrap
+							component='div'
+							sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, cursor: 'pointer' }}>
+							{name}
+						</Typography>
+					</ListItem>
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
 							size='large'
@@ -117,13 +136,9 @@ export default function NavBar() {
 							}}>
 							{pages.map((page) => (
 								<span key={page.name}>
-									{/*
-									<Link href={page.path} passHref>
-										<MenuItem onClick={handleCloseNavMenu}>
-											<Typography textAlign='center'>{page.name}</Typography>
-										</MenuItem>
-									</Link>
-                  */}
+									<ListItem button onClick={(event) => handleListItemClick(event, page.path)}>
+										<Typography textAlign='center'>{page.name}</Typography>
+									</ListItem>
 								</span>
 							))}
 						</Menu>
@@ -138,17 +153,18 @@ export default function NavBar() {
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{pages.map((page) => (
 							<span key={page.name}>
-								{/*
-								<Link href={page.path} passHref>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Typography textAlign='center'>{page.name}</Typography>
-									</MenuItem>
-								</Link>
-                */}
+								<ListItem
+									style={{
+										margin: '1rem',
+										whiteSpace: 'nowrap',
+									}}
+									button
+									onClick={(event) => handleListItemClick(event, page.path)}>
+									<Typography textAlign='center'>{page.name}</Typography>
+								</ListItem>
 							</span>
 						))}
 					</Box>
-					{/*
 					{user ? (
 						<Box sx={{ flexGrow: 0 }}>
 							<Tooltip title='Opciones'>
@@ -182,7 +198,6 @@ export default function NavBar() {
 							</Menu>
 						</Box>
 					) : null}
-          */}
 				</Toolbar>
 			</Container>
 		</AppBar>

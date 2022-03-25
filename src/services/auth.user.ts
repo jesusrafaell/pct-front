@@ -26,23 +26,21 @@ async function login(user: UserLoginInt) {
 
 async function register(user: UserInt) {
 	try {
-		const res: AxiosResponse<any> = await useAxios.post('/auth/register', user);
-		//console.log('Register ok', res);
-		//Router.push('/auth/login');
+		await useAxios.post('/auth/register', user);
 		successRegister();
 	} catch (err: any) {
-		console.log(err);
+		//console.log(err);
 		const data = err.response?.data;
 		const resError = {
 			type: 'Error',
 			message: data?.message || 'Error: Api',
 			code: data?.code || err?.response?.status || '400',
 		};
-		console.log(resError);
+		//console.log(resError);
 		return resError;
 	}
 }
 
-function logout() {
+export function logout() {
 	removeCookies('token');
 }

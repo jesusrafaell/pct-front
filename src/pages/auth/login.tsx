@@ -1,17 +1,15 @@
-import * as React from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useStyles } from '@/styles/auth/styles';
-import Layout from '@/components/layout/Layout';
-import Auth from '@/components/auth/Auth';
 import Box from '@mui/material/Box';
-import AletCustomSnackbars from '@/components/alert/alert-custom-snackbars';
-import { useContext, useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useStyles } from '../../styles/auth/styles';
+import Layout from '../../components/layout/Layout';
+import Auth from '../../components/auth/Auth';
+import AletCustomSnackbars from '../../components/alert/alert-custom-snackbars';
 import { validEmail } from '../../validation/auth';
-import { FlagInt, ObjString, UserLoginInt } from '../../interfaces/auth/interfaces';
-import AuthContext from '@/stores/authContext';
-import useSafeLayoutEffect from '@/utilis/use-safe-layout-effect';
-import { withNotAuth } from '@/middleware/public/withNotAuth';
+import { FlagInt, UserLoginInt } from '../../interfaces/auth/interfaces';
+import AuthContext from '../../stores/authContext';
+import { logout } from '../../services/auth.user';
 
 export default function Login() {
 	const classes = useStyles();
@@ -31,8 +29,8 @@ export default function Login() {
 	});
 
 	//Por ahora (borrar cuando pase todo a cookie)
-	useSafeLayoutEffect(() => {
-		localStorage.removeItem('token');
+	useLayoutEffect(() => {
+		logout();
 	}, []);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +51,9 @@ export default function Login() {
 			setError('Todos los campos son requeridos');
 			return;
 		}
+
 		const res = await login(user);
+
 		if (res) {
 			setError(res.message);
 			setAlert(true);
